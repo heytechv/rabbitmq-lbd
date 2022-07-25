@@ -1,8 +1,8 @@
-package com.stazlbd.rabbitmqlbd.rabbitmq;
+package com.stazlbd.rabbitmqlbd.rabbitmq.producer;
 
-import com.stazlbd.rabbitmqlbd.service.ArticleService;
-import com.stazlbd.rabbitmqlbd.service.CommentService;
-import com.stazlbd.rabbitmqlbd.service.UserService;
+import com.stazlbd.rabbitmqlbd.rabbitmq.producer.service.ArticleService;
+import com.stazlbd.rabbitmqlbd.rabbitmq.producer.service.CommentService;
+import com.stazlbd.rabbitmqlbd.rabbitmq.producer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class RabbitProducer {
+public class RabbitProducerController {
 
     @Autowired private UserService userService;
     @Autowired private ArticleService articleService;

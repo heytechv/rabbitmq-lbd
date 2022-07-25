@@ -1,4 +1,4 @@
-package com.stazlbd.rabbitmqlbd.service;
+package com.stazlbd.rabbitmqlbd.rabbitmq.producer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,17 +6,23 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class ArticleService {
 
     @Autowired private StreamBridge streamBridge;
 
-    @Value("${config.rabbitmq.userExchangeIn}") public String topic;
+    @Value("${config.rabbitmq.articleExchangeIn}") public String topic;
 
 
-    public String createUser() {
-        sendToTopic("USER_CREATED");
+    public String createArticle() {
+        sendToTopic("ARTICLE_CREATED");
 
-        return "user created!";
+        return "article created!";
+    }
+
+    public String updateArticle() {
+        sendToTopic("ARTICLE_UPDATE");
+
+        return "article updated!";
     }
 
     private void sendToTopic(Object data) {

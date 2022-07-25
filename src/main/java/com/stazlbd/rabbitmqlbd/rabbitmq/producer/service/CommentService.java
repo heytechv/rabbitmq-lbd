@@ -1,4 +1,4 @@
-package com.stazlbd.rabbitmqlbd.service;
+package com.stazlbd.rabbitmqlbd.rabbitmq.producer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
