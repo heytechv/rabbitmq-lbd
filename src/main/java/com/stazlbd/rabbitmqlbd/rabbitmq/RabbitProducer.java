@@ -1,17 +1,16 @@
-package com.stazlbd.rabbitmqlbd.controller;
+package com.stazlbd.rabbitmqlbd.rabbitmq;
 
 import com.stazlbd.rabbitmqlbd.service.ArticleService;
 import com.stazlbd.rabbitmqlbd.service.CommentService;
 import com.stazlbd.rabbitmqlbd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MainController {
+public class RabbitProducer {
 
     @Autowired private UserService userService;
     @Autowired private ArticleService articleService;
