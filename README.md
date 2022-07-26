@@ -1,15 +1,63 @@
 # Spring Cloud Stream + RabbitMQ
-The application consists of:
+
+### In Spring Cloud Stream application we have 3 function types:
+([Spring Cloud Stream example](http://shaikezam.com/spring_cloud_stream_functional))
+#### 1. Supplier< Object > as Producer/Publisher
+Returns data on output (only output exchange is created)
+```java
+@Component
+static class Producer {
+    @Bean public Supplier<String> publish() {
+        return "Hello World!";
+    }
+}
+```
+
+In most cases we should use `StreamBridge` instead of `Supplier` as follows:
+```java
+streamBridge.send("topic.name.i.mean.function", "data");
+```
+
+#### 2. Function< Object, Object > as Processor
+Seizes data from input and returns on output (input and output exchanges are created)
+
+```java
+@Component
+static class Processor {
+    @Bean public Function<String, String> userExchange() {
+        return message -> {
+            return messageForQueue.toLowerCase();
+        };
+    }
+}
+```
+
+#### 3. Consumer< Object >
+Seizes data on input (only input exchange is created)
+
+```java
+@Component
+public class Consumer {
+    @Bean public Consumer<String> onReceive() {
+        return message -> log.info("Received the value '{}' in Consumer", message);
+    }
+}
+
+```
+
+________
+
+### This application consists of:
 - producer - produces data we send to exchange (function)
 - processor - exchange (function)
 - consumer - get data from exchange (via queue?) // todo
 
-Data flow in project:<br/>
+### Data flow in the project:<br/>
 `PRODUCER -> in(exchange) PROCESSOR out(exchange) -> in(queue) CONSUMER`
 
-Postman config for Controller testing (PRODUCER) in `docs/Postman`
+### Postman config for Controller testing (PRODUCER) in `docs/Postman`
 
-#### Sources:
+### Sources:
 - [Spring Cloud Stream using RabbitMQ](https://github.com/smoothed9/spring-cloud-stream-rabbit)
 - [Kafka streams with Spring Cloud Stream + Serializer](https://piotrminkowski.com/2021/11/11/kafka-streams-with-spring-cloud-stream/)
 - [Official spring-cloud-stream-binder-rabbit](https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit)
@@ -18,6 +66,9 @@ Postman config for Controller testing (PRODUCER) in `docs/Postman`
 - [Spring Cloud Stream Tutorial](https://www.youtube.com/watch?v=YEci46QRJ7E)
 - [Spring Cloud Stream Tutorial RabbitMQ](https://www.youtube.com/watch?v=Y1bwOL08mqs)
 - [Spring Boot RabbitMQ](https://www.youtube.com/watch?v=o4qCdBR4gUM)
+- [Spring Cloud Stream example](http://shaikezam.com/spring_cloud_stream_functional)
+
+_______
 
 ### 0. Maven dependency
 *pom.xml*
