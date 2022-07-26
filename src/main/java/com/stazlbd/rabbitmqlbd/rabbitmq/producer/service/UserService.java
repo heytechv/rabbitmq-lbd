@@ -11,6 +11,7 @@ public class UserService {
     @Autowired private StreamBridge streamBridge;
 
     @Value("${config.rabbitmq.userExchangeIn}") public String topic;
+    @Value("${config.rabbitmq.allOutput}") public String allOutTopic;
 
 
     public String createUser() {
@@ -19,9 +20,19 @@ public class UserService {
         return "user created!";
     }
 
-    private void sendToTopic(Object data) {
+    public String sendEmail() {
+        sendToTopic(allOutTopic, "EMAIL_SENT");
+
+        return "email sent!";
+    }
+
+    private void sendToTopic(String topic, Object data) {
         // streamBridge.send("topic.name.i.mean.function", "data")
         streamBridge.send(topic, data);
+    }
+
+    private void sendToTopic(Object data) {
+        sendToTopic(topic, data);
     }
 
 

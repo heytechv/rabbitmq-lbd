@@ -48,5 +48,11 @@ public class RabbitProducerController {
     public String deleteComment() {
         return commentService.deleteComment();
     }
+
+    /** Command */
+    @PostMapping("/emailToUser")
+    public String sendEmailToUser() {
+        return userService.sendEmail();
+    }
     
 }
