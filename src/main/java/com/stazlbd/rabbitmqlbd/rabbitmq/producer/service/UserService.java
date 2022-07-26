@@ -13,16 +13,14 @@ public class UserService {
     @Value("${config.rabbitmq.userExchangeIn}") public String topic;
     @Value("${config.rabbitmq.allOutput}") public String allOutTopic;
 
-
     public String createUser() {
         sendToTopic("USER_CREATED");
-
         return "user created!";
     }
 
     public String sendEmail() {
+        // direct cmd to queue
         sendToTopic(allOutTopic, "EMAIL_SENT");
-
         return "email sent!";
     }
 
