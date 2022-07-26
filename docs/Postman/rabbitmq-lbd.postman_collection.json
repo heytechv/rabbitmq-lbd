@@ -113,6 +113,24 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "emailToUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/emailToUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"emailToUser"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
