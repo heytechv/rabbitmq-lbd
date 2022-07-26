@@ -12,7 +12,6 @@ public class RabbitProcessor {
 
     public final Logger log = LoggerFactory.getLogger(RabbitProcessor.class);
 
-
     /** Demo
      * RabbitMQ domyslnie tworzy exchange z zarejestrowanej funkcji w aplication.properties
      * Tworzy exchange typu 'topic' */

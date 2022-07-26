@@ -12,16 +12,13 @@ public class ArticleService {
 
     @Value("${config.rabbitmq.articleExchangeIn}") public String topic;
 
-
     public String createArticle() {
         sendToTopic("ARTICLE_CREATED");
-
         return "article created!";
     }
 
     public String updateArticle() {
         sendToTopic("ARTICLE_UPDATE");
-
         return "article updated!";
     }
 
@@ -29,6 +26,5 @@ public class ArticleService {
         // streamBridge.send("topic.name.i.mean.function", "data")
         streamBridge.send(topic, data);
     }
-
 
 }

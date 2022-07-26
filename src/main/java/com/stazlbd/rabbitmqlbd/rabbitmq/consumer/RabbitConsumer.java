@@ -12,11 +12,8 @@ public class RabbitConsumer {
 
     public final Logger log = LoggerFactory.getLogger(RabbitConsumer.class);
 
-
     @Bean public Consumer<String> onReceive() {
-        return message -> {
-            log.info("Received the value '{}' in Consumer", message);
-        };
+        return message -> log.info("Received the value '{}' in Consumer", message);
     }
 
 }

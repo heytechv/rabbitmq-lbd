@@ -12,22 +12,18 @@ public class CommentService {
 
     @Value("${config.rabbitmq.commentExchangeIn}") public String topic;
 
-
     public String createComment() {
         sendToTopic("COMMENT_CREATED");
-
         return "comment created!";
     }
 
     public String updateArticle() {
         sendToTopic("COMMENT_UPDATED");
-
         return "comment updated!";
     }
 
     public String deleteComment() {
         sendToTopic("COMMENT_DELETED");
-
         return "comment deleted!";
     }
 
@@ -35,6 +31,5 @@ public class CommentService {
         // streamBridge.send("topic.name.i.mean.function", "data")
         streamBridge.send(topic, data);
     }
-
 
 }

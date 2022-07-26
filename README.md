@@ -1,11 +1,23 @@
 # Spring Cloud Stream + RabbitMQ
-Aplikacja składa się z 3 "programów":
-- producer - produkuje dane wysyłane do exchange (funkcji)
-- processor - exchange (funkcje)
-- consumer - konsumuje dane z exchange (przez kolejkę)
+The application consists of:
+- producer - produces data we send to exchange (function)
+- processor - exchange (function)
+- consumer - get data from exchange (via queue?) // todo
 
-Przepływ danych w projekcie:<br/>
+Data flow in project:<br/>
 `PRODUCER -> in(exchange) PROCESSOR out(exchange) -> in(queue) CONSUMER`
+
+Postman config for Controller testing (PRODUCER) in `docs/Postman`
+
+#### Sources:
+- [Spring Cloud Stream using RabbitMQ](https://github.com/smoothed9/spring-cloud-stream-rabbit)
+- [Kafka streams with Spring Cloud Stream + Serializer](https://piotrminkowski.com/2021/11/11/kafka-streams-with-spring-cloud-stream/)
+- [Official spring-cloud-stream-binder-rabbit](https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit)
+- [Messaging RabbitMQ Tutorial (OK)](https://www.javainuse.com/messaging/rabbitmq/exchange?fbclid=IwAR0Z6YmPE6tl7awKltyukuKpRAclIzsnPNDXXox_AgBiGmeX8D7qj63vw1M)
+- [RabbitMQ docs](https://www.rabbitmq.com/tutorials/tutorial-two-java.html)
+- [Spring Cloud Stream Tutorial](https://www.youtube.com/watch?v=YEci46QRJ7E)
+- [Spring Cloud Stream Tutorial RabbitMQ](https://www.youtube.com/watch?v=Y1bwOL08mqs)
+- [Spring Boot RabbitMQ](https://www.youtube.com/watch?v=o4qCdBR4gUM)
 
 ### 0. Maven dependency
 *pom.xml*
@@ -106,7 +118,7 @@ public class UserService {
 ```
 
 ### 3. Processor
-By default RabbitMQ creates exchange from registered functions in aplication.properties
+By default RabbitMQ creates exchanges from registered functions in aplication.properties
 
 *RabbitProcessor.java*
 ```java

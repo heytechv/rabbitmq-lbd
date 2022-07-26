@@ -33,5 +33,4 @@ public class UserService {
         sendToTopic(topic, data);
     }
 
-
 }
