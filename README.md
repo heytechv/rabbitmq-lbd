@@ -161,9 +161,14 @@ public class UserService {
         return "user created!";
     }
 
+    /** Direct to queue (consumer) input */
     public String sendEmail() {
-        // direct cmd to queue
-        sendToTopic(allOutTopic, "EMAIL_SENT");
+        // > each function has own output (take a look at application.properties)
+        sendToTopic("onReceive-in-0", "EMAIL_SENT");
+
+        // > or all functions have common output
+        // sendToTopic(allOutTopic, "EMAIL_SENT");
+
         return "email sent!";
     }
 

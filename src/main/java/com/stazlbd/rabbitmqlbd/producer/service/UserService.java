@@ -20,10 +20,10 @@ public class UserService {
 
     /** Direct to queue (consumer) input */
     public String sendEmail() {
-        // > kazda osobno (config w application.properties)
+        // > each function has own output (take a look at application.properties)
         sendToTopic("onReceive-in-0", "EMAIL_SENT");
 
-        // > lub wszystkie exchange do jednego out
+        // > or all functions have common output
         // sendToTopic(allOutTopic, "EMAIL_SENT");
 
         return "email sent!";
