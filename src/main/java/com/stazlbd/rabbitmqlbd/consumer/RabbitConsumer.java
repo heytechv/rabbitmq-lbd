@@ -1,4 +1,4 @@
-package com.stazlbd.rabbitmqlbd.rabbitmq.consumer;
+package com.stazlbd.rabbitmqlbd.consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

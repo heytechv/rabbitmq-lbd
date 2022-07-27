@@ -47,26 +47,38 @@ public class Consumer {
 
 ________
 
-### This application consists of:
+### This project consists of:
 - producer - produces data we send to exchange (function)
 - processor - exchange (function)
 - consumer - get data from exchange (via queue?) // todo
 
-### Data flow in the project:<br/>
+### This project structure:<br/>
 `PRODUCER -> in(exchange) PROCESSOR out(exchange) -> in(queue) CONSUMER`
+```
+    ┌────────────────┐
+  ─>│userExchange    │─┐
+    └────────────────┘ │  
+    ┌────────────────┐ └─>┌──────────┐    
+  ─>│articleExchange │───>│onReceive │ 
+    └────────────────┘ ┌─>└──────────┘
+    ┌────────────────┐ │
+  ─>│commentExchange │─┘
+    └────────────────┘
+```
+
 
 ### Postman config for Controller testing (PRODUCER) in `docs/Postman`
 
 ### Sources:
 - [Spring Cloud Stream using RabbitMQ](https://github.com/smoothed9/spring-cloud-stream-rabbit)
 - [Kafka streams with Spring Cloud Stream + Serializer](https://piotrminkowski.com/2021/11/11/kafka-streams-with-spring-cloud-stream/)
+- [Spring Cloud Stream example](http://shaikezam.com/spring_cloud_stream_functional)
 - [Official spring-cloud-stream-binder-rabbit](https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit)
 - [Messaging RabbitMQ Tutorial (OK)](https://www.javainuse.com/messaging/rabbitmq/exchange?fbclid=IwAR0Z6YmPE6tl7awKltyukuKpRAclIzsnPNDXXox_AgBiGmeX8D7qj63vw1M)
 - [RabbitMQ docs](https://www.rabbitmq.com/tutorials/tutorial-two-java.html)
 - [Spring Cloud Stream Tutorial](https://www.youtube.com/watch?v=YEci46QRJ7E)
 - [Spring Cloud Stream Tutorial RabbitMQ](https://www.youtube.com/watch?v=Y1bwOL08mqs)
 - [Spring Boot RabbitMQ](https://www.youtube.com/watch?v=o4qCdBR4gUM)
-- [Spring Cloud Stream example](http://shaikezam.com/spring_cloud_stream_functional)
 
 _______
 
@@ -230,43 +242,73 @@ public class RabbitConsumer {
 ```
 
 ### 4. Register in application.properties
+We can bind each exchange (Function) to its own output<br/>
+<b>or</b> we can bind every exchange (Function) output to one common output (<b>idk if optimal</b>)<br/>
+(two config possibilities are shown below)
 
 *application.properties*
-```yaml
-## Configuration of RabbitMQ
+```properties
+# -- Configuration of RabbitMQ --
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
 spring.rabbitmq.username=user
 spring.rabbitmq.password=pass
 
-## My RabbitMQ namespace
-config.rabbitmq.userExchangeIn=moje.input.user
-config.rabbitmq.userExchangeOut=moje.output.user
+# -- My RabbitMQ namespace --
+#config.rabbitmq.userExchangeIn=user.input
+config.rabbitmq.userExchangeIn=user.in
+config.rabbitmq.userExchangeOut=user.out
 
-config.rabbitmq.articleExchangeIn=moje.input.article
-config.rabbitmq.articleExchangeOut=moje.output.article
+config.rabbitmq.articleExchangeIn=article.in
+config.rabbitmq.articleExchangeOut=article.out
 
-config.rabbitmq.commentExchangeIn=moje.input.comment
-config.rabbitmq.commentExchangeOut=moje.output.comment
+config.rabbitmq.commentExchangeIn=comment.in
+config.rabbitmq.commentExchangeOut=comment.out
 
-config.rabbitmq.allOutput=all.out
+config.rabbitmq.allOutput=all.out.queue
 
-## Processor Config
-# Configuration of functions (exchanges)
-spring.cloud.function.definition=convertToUppercase;userExchange;articleExchange;commentExchange;onReceive
+# -- Configuration of functions (exchanges) --
+spring.cloud.function.definition=userExchange;articleExchange;commentExchange;onReceive
 
-# By default exchange is created with name 'functionName-in/out-0'
+# -- Processor --
+# Domyslnie tworzone sa kolejki o nazwie 'nazwaFunkcji-in/out-0'
+# mozemy nazwy i konfiguracje overridowac
+#
+# spring.cloud.stream.bindings.userExchange-in-0.group=nazwa kolejki (queue)
+
+## userExchange
+# > One own output
 spring.cloud.stream.bindings.userExchange-in-0.destination=${config.rabbitmq.userExchangeIn}
-spring.cloud.stream.bindings.userExchange-out-0.destination=${config.rabbitmq.allOutput}
+spring.cloud.stream.bindings.userExchange-out-0.destination=${config.rabbitmq.userExchangeOut}
+    # nazwa kolejki dla input
+spring.cloud.stream.bindings.userExchange-in-0.group=queue
 
+# > or common output
+#spring.cloud.stream.bindings.userExchange-in-0.destination=${config.rabbitmq.userExchangeIn}
+#spring.cloud.stream.bindings.userExchange-out-0.destination=${config.rabbitmq.allOutput}
+
+## articleExchange
 spring.cloud.stream.bindings.articleExchange-in-0.destination=${config.rabbitmq.articleExchangeIn}
-spring.cloud.stream.bindings.articleExchange-out-0.destination=${config.rabbitmq.allOutput}
+spring.cloud.stream.bindings.articleExchange-out-0.destination=${config.rabbitmq.articleExchangeOut}
+spring.cloud.stream.bindings.commentExchange-in-0.group=queue
 
+## commentExchange
 spring.cloud.stream.bindings.commentExchange-in-0.destination=${config.rabbitmq.commentExchangeIn}
-spring.cloud.stream.bindings.commentExchange-out-0.destination=${config.rabbitmq.allOutput}
+spring.cloud.stream.bindings.commentExchange-out-0.destination=${config.rabbitmq.commentExchangeOut}
+spring.cloud.stream.bindings.articleExchange-in-0.group=queue
 
-## Consumer Config
-spring.cloud.stream.bindings.onReceive-in-0.destination=${config.rabbitmq.allOutput}
-spring.cloud.stream.bindings.onReceive-in-0.group=consumer
+# -- Consumer --
+# > seizes data from each output
+spring.cloud.stream.bindings.onReceive-in-0.destination=${config.rabbitmq.userExchangeOut},${config.rabbitmq.articleExchangeOut},${config.rabbitmq.commentExchangeOut}
+    # queue name
+spring.cloud.stream.bindings.onReceive-in-0.group=${config.rabbitmq.allOutput}
+    #
+spring.cloud.stream.rabbit.bindings.onReceive-in-0.consumer.bind-queue=true
+    # zeby nie tworzyl wielu tylko jedna
+spring.cloud.stream.rabbit.bindings.onReceive-in-0.consumer.queueNameGroupOnly=true
+
+# > lub jak bylo wysylane do jednego to z jednego
+#spring.cloud.stream.bindings.onReceive-in-0.destination=${config.rabbitmq.allOutput}
+#spring.cloud.stream.bindings.onReceive-in-0.group=consumer
+
 ```
-

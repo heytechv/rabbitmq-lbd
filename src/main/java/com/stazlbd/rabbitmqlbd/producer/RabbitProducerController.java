@@ -1,8 +1,8 @@
-package com.stazlbd.rabbitmqlbd.rabbitmq.producer;
+package com.stazlbd.rabbitmqlbd.producer;
 
-import com.stazlbd.rabbitmqlbd.rabbitmq.producer.service.ArticleService;
-import com.stazlbd.rabbitmqlbd.rabbitmq.producer.service.CommentService;
-import com.stazlbd.rabbitmqlbd.rabbitmq.producer.service.UserService;
+import com.stazlbd.rabbitmqlbd.producer.service.ArticleService;
+import com.stazlbd.rabbitmqlbd.producer.service.CommentService;
+import com.stazlbd.rabbitmqlbd.producer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,4 +1,4 @@
-package com.stazlbd.rabbitmqlbd.rabbitmq.producer.service;
+package com.stazlbd.rabbitmqlbd.producer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,9 +18,14 @@ public class UserService {
         return "user created!";
     }
 
+    /** Direct to queue (consumer) input */
     public String sendEmail() {
-        // direct cmd to queue
-        sendToTopic(allOutTopic, "EMAIL_SENT");
+        // > kazda osobno (config w application.properties)
+        sendToTopic("onReceive-in-0", "EMAIL_SENT");
+
+        // > lub wszystkie exchange do jednego out
+        // sendToTopic(allOutTopic, "EMAIL_SENT");
+
         return "email sent!";
     }
 
