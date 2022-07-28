@@ -1,11 +1,27 @@
 version: "3.8"
 
 services:
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
+  localstack:
+    image: localstack/localstack:latest
     ports:
-      - '5672:5672'
-      - '15672:15672'
+      - "4566:4566"
+      - "4569:4569"
+      - "4571:4571"
+      - "4572:4572"
+      - "4574:4574"
+      - "8081:8080"
     environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=pass
+      - SERVICES=s3,lambda,serverless,sqs
+      - DEBUG=1
+      - AWS_DEFAULT_REGION=eu-central-1
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=bar
+      - EDGE_PORT=4566
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LAMBDA_DOCKER_NETWORK=aws-lbd_default
+      - HOSTNAME_EXTERNAL=localstack
+      - DATA_DIR=/tmp/localstack
+      - LAMBDA_REMOTE_DOCKER=true
+    volumes:
+      - "./docker_tmp:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
