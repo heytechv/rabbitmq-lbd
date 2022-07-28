@@ -10,7 +10,7 @@ public class ArticleService {
 
     @Autowired private StreamBridge streamBridge;
 
-    @Value("${config.rabbitmq.articleExchangeIn}") public String topic;
+    @Value("${config.sqs.articleTopic}") public String topic;
 
     public String createArticle() {
         sendToTopic("ARTICLE_CREATED");

@@ -3,14 +3,16 @@ package com.stazlbd.rabbitmqlbd.producer.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.messaging.Message;
 
 @Service
 public class CommentService {
 
     @Autowired private StreamBridge streamBridge;
 
-    @Value("${config.rabbitmq.commentExchangeIn}") public String topic;
+    @Value("${config.sqs.commentTopic}") public String topic;
 
     public String createComment() {
         sendToTopic("COMMENT_CREATED");

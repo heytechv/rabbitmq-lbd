@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  localstack:
-    image: localstack/localstack:latest
+  localstack_kolejki:
+    image: localstack/localstack:0.12.12
     ports:
       - "4566:4566"
       - "4569:4569"
@@ -11,15 +11,15 @@ services:
       - "4574:4574"
       - "8081:8080"
     environment:
-      - SERVICES=s3,lambda,serverless,sqs
+      - SERVICES=serverless,sqs
       - DEBUG=1
       - AWS_DEFAULT_REGION=eu-central-1
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=bar
       - EDGE_PORT=4566
       - DOCKER_HOST=unix:///var/run/docker.sock
-      - LAMBDA_DOCKER_NETWORK=aws-lbd_default
-      - HOSTNAME_EXTERNAL=localstack
+      - LAMBDA_DOCKER_NETWORK=rabbitmq-lbd_default
+      - HOSTNAME_EXTERNAL=localstack_kolejki
       - DATA_DIR=/tmp/localstack
       - LAMBDA_REMOTE_DOCKER=true
     volumes:

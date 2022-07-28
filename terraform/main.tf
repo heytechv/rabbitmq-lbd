@@ -34,9 +34,12 @@ provider "aws" {
 
 # Create sqs (queue) - mam nadzieje ze if not exists
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queues
-resource "aws_sqs_queue" "userInQueue" {
-  name = "userInQueue"
+resource "aws_sqs_queue" "userTopic" {
+  name = "userTopic"
 }
-resource "aws_sqs_queue" "userOutQueue" {
-  name = "userOutQueue"
+resource "aws_sqs_queue" "articleTopic" {
+  name = "articleTopic"
+}
+resource "aws_sqs_queue" "commentTopic" {
+  name = "commentTopic"
 }

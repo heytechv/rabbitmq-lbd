@@ -10,8 +10,7 @@ public class UserService {
 
     @Autowired private StreamBridge streamBridge;
 
-    @Value("${config.rabbitmq.userExchangeIn}") public String topic;
-    @Value("${config.rabbitmq.allOutput}") public String allOutTopic;
+    @Value("${config.sqs.userTopic}") public String topic;
 
     public String createUser() {
         sendToTopic("USER_CREATED");
@@ -20,12 +19,7 @@ public class UserService {
 
     /** Direct to queue (consumer) input */
     public String sendEmail() {
-        // > each function has own output (take a look at application.properties)
-        sendToTopic("onReceive-in-0", "EMAIL_SENT");
-
-        // > or all functions have common output
-        // sendToTopic(allOutTopic, "EMAIL_SENT");
-
+        // todo
         return "email sent!";
     }
 
