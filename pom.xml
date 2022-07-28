@@ -38,9 +38,9 @@
 <!--        </dependency>-->
 
         <dependency>
-            <groupId>de.idealo.spring</groupId>
-            <artifactId>spring-cloud-stream-binder-sqs</artifactId>
-            <version>1.7.1</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+            <version>3.2.4</version>
         </dependency>
 
 

@@ -1,27 +1,21 @@
 version: "3.8"
 
 services:
-  localstack_kolejki:
-    image: localstack/localstack:0.12.12
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
     ports:
-      - "4566:4566"
-      - "4569:4569"
-      - "4571:4571"
-      - "4572:4572"
-      - "4574:4574"
-      - "8081:8080"
+      - '2181:2181'
     environment:
-      - SERVICES=serverless,sqs
-      - DEBUG=1
-      - AWS_DEFAULT_REGION=eu-central-1
-      - AWS_ACCESS_KEY_ID=foo
-      - AWS_SECRET_ACCESS_KEY=bar
-      - EDGE_PORT=4566
-      - DOCKER_HOST=unix:///var/run/docker.sock
-      - LAMBDA_DOCKER_NETWORK=rabbitmq-lbd_default
-      - HOSTNAME_EXTERNAL=localstack_kolejki
-      - DATA_DIR=/tmp/localstack
-      - LAMBDA_REMOTE_DOCKER=true
-    volumes:
-      - "./docker_tmp:/tmp/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: 'bitnami/kafka:latest'
+    ports:
+      - '9092:9092'
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
