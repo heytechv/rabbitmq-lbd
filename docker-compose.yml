@@ -1,11 +1,23 @@
 version: "3.8"
 
 services:
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
+#  rabbitmq:
+##    image: rabbitmq:3-management-alpine
+#    image: heidiks/rabbitmq-delayed-message-exchange:latest
+#    ports:
+#      - '5672:5672'
+#      - '15672:15672'
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=user
+#      - RABBITMQ_DEFAULT_PASS=pass
+
+  rabbitmq-my:
+    image: rabbitmq-my
+    build: .
     ports:
       - '5672:5672'
       - '15672:15672'
     environment:
       - RABBITMQ_DEFAULT_USER=user
       - RABBITMQ_DEFAULT_PASS=pass
+
