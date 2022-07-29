@@ -12,8 +12,25 @@ public class RabbitConsumer {
 
     public final Logger log = LoggerFactory.getLogger(RabbitConsumer.class);
 
-    @Bean public Consumer<String> onReceive() {
-        return message -> log.info("Received the value '{}' in Consumer", message);
+    /** User Exchange */
+    @Bean public Consumer<String> userExchange() {
+        return message -> {
+            log.info("[U] Received '{}'", message);
+        };
+    }
+
+    /** Article Exchange */
+    @Bean public Consumer<String> articleExchange() {
+        return message -> {
+            log.info("[A] Received '{}'", message);
+        };
+    }
+
+    /** Comment Exchange */
+    @Bean public Consumer<String> commentExchange() {
+        return message -> {
+            log.info("[C] Received {}", message);
+        };
     }
 
 }
